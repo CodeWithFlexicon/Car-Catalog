@@ -3,7 +3,8 @@ import { pool } from "../../../config/configPg";
 export default async function handler(req, res) {
   try {
     const modelsQuery = `
-      SELECT DISTINCT ON (mm.id) 
+      SELECT DISTINCT ON (mm.id)
+      mm.imageURL AS imageURL, 
       mm.id AS model_id,
       mm.name AS model,
       mmt.year,

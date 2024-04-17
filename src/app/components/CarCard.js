@@ -27,8 +27,8 @@ function CarCard({ car }) {
       className="max-w-sm rounded overflow-hidden shadow-lg hover:shadow-xl cursor-pointer"
       onClick={handleClick}
     >
-      <Image
-        src={car.imageUrl || "/images/CarPlaceHolder.webp"}
+      <img
+        src={car.imageurl || "/images/CarPlaceHolder.webp"}
         alt={car.model}
         width={1000}
         height={1000}

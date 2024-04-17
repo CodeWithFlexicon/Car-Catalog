@@ -67,7 +67,7 @@ const CarModelPage = () => {
     <div className="flex justify-center items-start mt-10 mx-20">
       <div className="w-1/2 p-5">
         <img
-          src={selectedCar?.imageUrl || "/images/CarPlaceHolder.webp"}
+          src={selectedCar?.model_image || "/images/CarPlaceHolder.webp"}
           alt="Car"
           className="w-full h-auto rounded-lg shadow-lg"
         />

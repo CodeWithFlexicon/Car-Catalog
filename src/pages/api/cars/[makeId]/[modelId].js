@@ -30,10 +30,11 @@ export default async function handler(req, res) {
     const modelName = modelResult.rows[0].name;
 
     const detailsQuery = `
-      SELECT mmt.*, mmtb.*, mmte.*, '${makeName}' AS make_name, '${modelName}' AS model_name
+      SELECT mmt.*, mmtb.*, mmte.*, '${makeName}' AS make_name, '${modelName}' AS model_name, mm.imageurl AS model_image
       FROM make_model_trims mmt
       LEFT JOIN make_model_trim_bodies mmtb ON mmt.id = mmtb.make_model_trim_id
       LEFT JOIN make_model_trim_engines mmte ON mmt.id = mmte.make_model_trim_id
+      LEFT JOIN make_models mm ON mmt.make_model_id = mm.id
       WHERE mmt.make_model_id = $1
       ORDER BY mmt.year DESC;
     `;
