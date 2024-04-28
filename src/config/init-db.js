@@ -118,14 +118,7 @@ const createTableQuery = `
       updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
     );
 
-    CREATE TABLE IF NOT EXISTS favorites (
-      favorite_id SERIAL PRIMARY KEY,
-      user_id INTEGER NOT NULL,
-      make_model_trim_id INTEGER NOT NULL,
-      FOREIGN KEY (user_id) REFERENCES users(user_id),
-      FOREIGN KEY (make_model_trim_id) REFERENCES make_model_trims(id)
-    );
-
+    
     CREATE TABLE IF NOT EXISTS make (
       id BIGINT PRIMARY KEY,
       name VARCHAR(32) NOT NULL,
@@ -233,6 +226,15 @@ const createTableQuery = `
       epa_combined_mpg_electric INTEGER,
       FOREIGN KEY (make_model_trim_id) REFERENCES make_model_trims(id)
     ); 
+
+    CREATE TABLE IF NOT EXISTS favorites (
+      favorite_id SERIAL PRIMARY KEY,
+      user_id INTEGER NOT NULL,
+      make_model_trim_id INTEGER NOT NULL,
+      FOREIGN KEY (user_id) REFERENCES users(user_id),
+      FOREIGN KEY (make_model_trim_id) REFERENCES make_model_trims(id)
+    );
+
 `;
 
 async function initEnum() {

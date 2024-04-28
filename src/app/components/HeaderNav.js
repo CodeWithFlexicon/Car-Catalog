@@ -39,7 +39,11 @@ export default function HeaderNav() {
           {session ? (
             <>
               <div className="flex items-center gap-2">
-                <span className="text-blue-400">{session.user.name}</span>
+                <Link href="userProfile" className="text-blue-600 hover:text-blue-800" >
+                <span className="text-blue-600">{session.user.name}</span>
+
+
+                </Link>
                 <Image
                   src="/images/ProfilePlaceholder.webp"
                   alt="Profile"
