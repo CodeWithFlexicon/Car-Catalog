@@ -15,6 +15,11 @@ export default function UserProfile(){
       }
     }, [session, status, router]);
 
+    if (!session){
+      return <div>Redirecting to login</div>
+    }
+
+
     
 
     return(
