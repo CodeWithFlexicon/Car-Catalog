@@ -3,8 +3,6 @@ import { useState,useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 
-
-
 export default function UserProfile(){
     const { data: session, status } = useSession();
     const router = useRouter();
@@ -17,10 +15,7 @@ export default function UserProfile(){
 
     if (!session){
       return <div>Redirecting to login</div>
-    }
-
-
-    
+    }    
 
     return(
       <div class="bg-white overflow-hidden shadow rounded-lg border">
