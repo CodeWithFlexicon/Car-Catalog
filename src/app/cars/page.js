@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import CarCard from "../components/CarCard";
 import Image from "next/image";
 
-export default function HomePage() {
+export default function CarsPage() {
   const [models, setModels] = useState([]);
 
   useEffect(() => {
