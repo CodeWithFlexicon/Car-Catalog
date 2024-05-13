@@ -1,13 +1,19 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 const CarModelPage = () => {
   const [carDetails, setCarDetails] = useState([]);
   const [selectedYear, setSelectedYear] = useState("");
   const [selectedTrim, setSelectedTrim] = useState("");
   const [filteredTrims, setFilteredTrims] = useState([]);
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [message, setMessage] = useState("");
+  const { data: session } = useSession();
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   useEffect(() => {
     const pathParts = pathname.split("/").filter(Boolean); // Split and remove any empty strings
@@ -17,10 +23,22 @@ const CarModelPage = () => {
 
       fetch(`/api/cars/${make}/${model}`)
         .then((response) => response.json())
-        .then((data) => setCarDetails(data))
+        .then((data) => {
+          setCarDetails(data);
+
+          // Set initial selectedYear and selectedTrim from query parameters
+          const year = searchParams.get("year");
+          const trim = searchParams.get("trim");
+          if (year) {
+            setSelectedYear(year);
+          }
+          if (trim) {
+            setSelectedTrim(trim);
+          }
+        })
         .catch((error) => console.error("Failed to load car details:", error));
     }
-  }, [pathname]);
+  }, [pathname, searchParams]);
 
   useEffect(() => {
     if (selectedYear) {
@@ -32,6 +50,12 @@ const CarModelPage = () => {
     }
   }, [selectedYear, carDetails]);
 
+  useEffect(() => {
+    if (session && selectedTrim) {
+      checkFavoriteStatus(selectedTrim);
+    }
+  }, [session, selectedTrim]);
+
   const years = [
     ...new Set(carDetails.map((car) => car.year.toString())),
   ].sort();
@@ -39,20 +63,70 @@ const CarModelPage = () => {
   const handleYearChange = (e) => {
     setSelectedYear(e.target.value);
     setSelectedTrim("");
+    setMessage(""); // Reset the message when user changes selection
   };
 
   const handleTrimChange = (e) => {
     setSelectedTrim(e.target.value);
+    setMessage(""); // Reset the message when user changes selection
+  };
+
+  const toggleFavorite = async () => {
+    if (!session) {
+      router.push("/login");
+      return;
+    }
+
+    if (!selectedYear || !selectedTrim) {
+      setMessage("Please select a year and a trim.");
+      return;
+    }
+
+    const endpoint = isFavorite
+      ? "/api/favorites/remove"
+      : "/api/favorites/add";
+    const method = "POST";
+    const response = await fetch(endpoint, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        userId: session.user.id,
+        makeModelTrimId: selectedTrim,
+      }),
+    });
+
+    if (response.ok) {
+      setIsFavorite(!isFavorite);
+      setMessage("");
+    } else {
+      const errorData = await response.json();
+      console.error("Error toggling favorite:", errorData.message);
+      setMessage("Failed to toggle favorite. Please try again.");
+    }
+  };
+
+  const checkFavoriteStatus = async (trimId) => {
+    if (!session || !trimId) return;
+    const response = await fetch(
+      `/api/favorites/check/${session.user.id}/${trimId}`
+    );
+    if (response.ok) {
+      const data = await response.json();
+      setIsFavorite(data.isFavorite);
+    }
   };
 
   const msrpNumber = (msrp) => {
     const msrpNumber = Number(msrp);
-    if (isNaN(msrpNumber)) return ""; // Handle invalid input
-    return msrpNumber.toLocaleString("en-US", {
-      style: "decimal",
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
+    return isNaN(msrpNumber)
+      ? ""
+      : msrpNumber.toLocaleString("en-US", {
+          style: "decimal",
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        });
   };
 
   const selectedCar = carDetails.find(
@@ -107,6 +181,16 @@ const CarModelPage = () => {
             ))}
           </select>
         </div>
+
+        <button
+          onClick={toggleFavorite}
+          className={`p-2 text-white rounded-md ${
+            isFavorite ? "bg-red-500" : "bg-blue-500"
+          }`}
+        >
+          {isFavorite ? "Unfavorite" : "Favorite"}
+        </button>
+        {message && <p className="text-red-500 mt-2">{message}</p>}
 
         {selectedCar && (
           <div className="border p-4 rounded-lg">
