@@ -11,11 +11,11 @@ export default function FavoritesPage() {
 
   useEffect(() => {
     if (session) {
-      console.log("Session data:", session); // Debugging session data
+      //.log("Session data:", session);
       fetch(`/api/favorites/check/${session.user.id}/get`)
         .then((response) => response.json())
         .then((data) => {
-          console.log("Fetched favorites data:", data); // Debugging fetched data
+          // console.log("Fetched favorites data:", data);
           setFavorites(data);
         })
         .catch((error) => console.error("Failed to load favorites:", error));
