@@ -34,12 +34,17 @@ export default function HeaderNav() {
             Favorites
           </Link>
         )}
+        {session && (
+          <Link href="/userprofile" className="text-blue-600 hover:text-blue-800">
+            Profile
+          </Link>
+        )}
 
         <div className="flex items-center gap-4">
           {session ? (
             <>
               <div className="flex items-center gap-2">
-                <span className="text-blue-400">{session.user.name}</span>
+                <span className="text-blue-600">{session.user.name}</span>
                 <Image
                   src="/images/ProfilePlaceholder.webp"
                   alt="Profile"
