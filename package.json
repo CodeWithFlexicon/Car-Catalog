@@ -18,7 +18,8 @@
     "node-fetch": "^2.6.7",
     "pg": "^8.11.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "react-slider": "^2.0.6"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

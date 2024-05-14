@@ -118,7 +118,6 @@ const createTableQuery = `
       updated_at TIMESTAMP WITHOUT TIME ZONE DEFAULT NOW()
     );
 
-    
     CREATE TABLE IF NOT EXISTS make (
       id BIGINT PRIMARY KEY,
       name VARCHAR(32) NOT NULL,
@@ -234,7 +233,6 @@ const createTableQuery = `
       FOREIGN KEY (user_id) REFERENCES users(user_id),
       FOREIGN KEY (make_model_trim_id) REFERENCES make_model_trims(id)
     );
-
 `;
 
 async function initEnum() {
