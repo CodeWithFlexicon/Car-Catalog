@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import { pool } from "../../../config/configPg";
 
-export default NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -36,7 +36,12 @@ export default NextAuth({
             throw new Error("Wrong password");
           }
 
-          return { id: user.user_id, name: user.username, email: user.email };
+          return {
+            id: user.user_id,
+            name: user.username,
+            email: user.email,
+            profile_imageurl: user.profile_imageurl,
+          };
         } catch (error) {
           console.error("Authentication error:", error);
           throw new Error(error.message);
@@ -51,13 +56,18 @@ export default NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
+        token.profile_imageurl = user.profile_imageurl;
       }
       return token;
     },
     async session({ session, token }) {
       session.user.id = token.id;
+      session.user.profile_imageurl = token.profile_imageurl;
       return session;
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+  debug: true,
+};
+
+export default NextAuth(authOptions);
