@@ -19,6 +19,7 @@ export default async function handler(req, res) {
 
     const modelsQuery = `
       SELECT DISTINCT ON (mm.id) 
+      mm.imageurl AS imageURL,
       mm.id as model_id,
       mm.name AS model,
       mmt.year,

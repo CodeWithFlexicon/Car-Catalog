@@ -19,8 +19,13 @@
     "node-fetch": "^2.6.7",
     "pg": "^8.11.5",
     "react": "^18",
+<<<<<<< HEAD
     "react-bootstrap-validation": "^0.1.11",
     "react-dom": "^18"
+=======
+    "react-dom": "^18",
+    "react-slider": "^2.0.6"
+>>>>>>> dcee452989d0d357a439180e2e507190dff14fe8
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",

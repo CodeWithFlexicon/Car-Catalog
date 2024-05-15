@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 
-function CarDetails({ makeId, modelId }) {
+function CarDetails({ make, model, year, trim }) {
   const [carDetails, setCarDetails] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -9,7 +9,9 @@ function CarDetails({ makeId, modelId }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch(`/api/cars/${makeId}/${modelId}`);
+        const response = await fetch(
+          `/api/cars/${make}/${model}?year=${year}&trim=${trim}`
+        );
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -25,7 +27,7 @@ function CarDetails({ makeId, modelId }) {
     if (makeId && modelId) {
       fetchData();
     }
-  }, [makeId, modelId]);
+  }, [make, model, year, trim]);
 
   if (isLoading) {
     return <p>Loading...</p>;
@@ -39,7 +41,14 @@ function CarDetails({ makeId, modelId }) {
   return (
     <div>
       <h1>Car Details</h1>
-      {/* Render your car details based on fetched data */}
+      {/* Render car details based on fetched data */}
+      <div>
+        <h2>
+          {carDetails.make_name} {carDetails.model_name} {carDetails.year}
+        </h2>
+        <p>{carDetails.description}</p>
+        {/* Add more details as needed */}
+      </div>
     </div>
   );
 }
