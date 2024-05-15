@@ -37,14 +37,17 @@ export default function UserProfile(){
             <dt class="text-sm font-medium text-gray-500">Email address</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               {session.user.email}
-            </dd>
-
+            </dd> 
+          </div>
           
-  
-          </div>        
         </dl>
+        
       </div>
+           
     </div>
+    
+
+    
 
     
 

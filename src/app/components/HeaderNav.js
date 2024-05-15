@@ -40,6 +40,12 @@ export default function HeaderNav() {
           </Link>
         )}
 
+        {session && (
+          <Link href="/updateUser" className="text-blue-600 hover:text-blue-800">
+            Update Profile
+          </Link>
+        )}
+
         <div className="flex items-center gap-4">
           {session ? (
             <>
